@@ -2,16 +2,16 @@ name: SCA Workflow
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: blackducksoftware/detect:10
-
+  package-manager-scan:
+    container:
+      image: "blackducksoftware/detect:10"
+    runs-on: ["sca"]
     steps:
       - uses: actions/checkout@v4
-
       - name: Run a one-line script
         run: echo Hello from SCA image
