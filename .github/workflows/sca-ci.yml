@@ -9,32 +9,32 @@ on:
 
 jobs:
   package-manager-scan:
-    container:
-      image: "blackducksoftware/detect:10"
+    #container:
+    #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
         run: echo Hello from SCA image
   signature-scan:
-    container:
-      image: "blackducksoftware/detect:10"
+    #container:
+    #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
         run: echo Hello from SCA image
   binary-scan:
-    container:
-      image: "blackducksoftware/detect:10"
+    #container:
+    #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
         run: echo Hello from SCA image
   container-scan:
-    container:
-      image: "blackducksoftware/detect:10"
+    #container:
+    #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
     steps:
       - uses: actions/checkout@v4
