@@ -14,16 +14,28 @@ jobs:
     runs-on: ["sca"]
     steps:
       - uses: actions/checkout@v4
-      - name: Run a one-line script
-        run: echo Hello from SCA image
+      - name: Detect Run
+        run: java -jar /Users/abyreddy/tools/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=DETECTOR --detect.tools.excluded=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift
+      - name: Upload BDIO to SCASS
+        run: echo "Uploading BDIO to SCASS"
+      - name: Wait for Scan Completion
+        run: echo "Waiting for Scan Completion"
+      - name: Download Results
+        run: echo "Download Results"
   signature-scan:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
     steps:
       - uses: actions/checkout@v4
-      - name: Run a one-line script
-        run: echo Hello from SCA image
+      - name: Detect Run
+        run: java -jar /Users/abyreddy/tools/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift
+      - name: Upload BDIO to SCASS
+        run: echo "Uploading BDIO to SCASS"
+      - name: Wait for Scan Completion
+        run: echo "Waiting for Scan Completion"
+      - name: Download Results
+        run: echo "Download Results"
   binary-scan:
     #container:
     #  image: "blackducksoftware/detect:10"
