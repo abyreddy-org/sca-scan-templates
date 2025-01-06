@@ -12,30 +12,42 @@ jobs:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./package-manager-scan
     steps:
       - uses: actions/checkout@v4
       - name: Detect Run
         run: java -jar /Users/abyreddy/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=DETECTOR --detect.tools.excluded=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift
       - name: Scanning the BDIO with SCASS
-        run: scass-cli -scan_type BDIO -bdio_path $PWD/output/scan.bdio
+        run: scass-cli -scan_type BDIO -bdio_path $PWD/output/bdio/scan.bdio
       - name: Publish Results
         run: ls -al results.json
   signature-scan:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./signature-scan
     steps:
       - uses: actions/checkout@v4
       - name: Detect Run
         run: java -jar /Users/abyreddy/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift
       - name: Scanning the BDIO with SCASS
-        run: scass-cli -scan_type BDIO -bdio_path $PWD/output/scan.bdio
+        run: scass-cli -scan_type BDIO -bdio_path $PWD/output/bdio/scan.bdio
       - name: Publish Results
         run: ls -al results.json
   binary-scan:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./binary-scan
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
@@ -44,6 +56,10 @@ jobs:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./container-scan
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
