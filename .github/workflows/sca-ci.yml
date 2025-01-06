@@ -12,10 +12,6 @@ jobs:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./package-manager-scan
     steps:
       - uses: actions/checkout@v4
       - name: Detect Run
@@ -28,10 +24,6 @@ jobs:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./signature-scan
     steps:
       - uses: actions/checkout@v4
       - name: Detect Run
@@ -44,10 +36,6 @@ jobs:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./binary-scan
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
@@ -56,10 +44,6 @@ jobs:
     #container:
     #  image: "blackducksoftware/detect:10"
     runs-on: ["sca"]
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./container-scan
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
