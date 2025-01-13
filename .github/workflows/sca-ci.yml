@@ -35,16 +35,17 @@ jobs:
           scass-cli -scan_type BDIO -bdio_path $BDIO_FILE_PATH
       - name: Publish Results
         run: ls -al results.json
-  #report:
-  #  needs: [package-manager-scan, signature-scan]
-  #  runs-on: ["sca"]
-  #  steps:
-  #    - uses: actions/github-script@v7
-  #      with:
-  #        script: |
-  #          github.rest.pulls.createReview({
-  #            pull_number: context.issue.number,
-  #            owner: context.repo.owner,
-  #            repo: context.repo.repo,
-  #            body: '👋 This is an sample comment from workflow!'
-  #          })
+  report:
+    #needs: [package-manager-scan, signature-scan]
+    runs-on: ["sca"]
+    steps:
+      - if: ${{ github.event_name == 'pull_request' && github.event.action == 'opened' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.pulls.createReview({
+              pull_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 This is an sample comment from workflow!'
+            })
