@@ -42,20 +42,27 @@ jobs:
   report:
     needs: [package-manager-scan, signature-scan]
     runs-on: ["sca"]
+    permissions:
+      pull-requests: write
     steps:
       - name: Generate Report
         run: |
-          export package_manager_results=$(python3 report.py package-manager-results.json)
-          export signature_scan_results=$(python3 report.py signature-scan-results.json)
+          export package_manager_results=$(python3 /Users/abyreddy/tools/report.py package-manager-results.json)
+          export signature_scan_results=$(python3 /Users/abyreddy/tools/report.py signature-scan-results.json)
           echo $package_manager_results
           echo $signature_scan_results
       - if: github.event_name == 'pull_request' && github.event.action == 'opened'
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.pulls.createReview({
-              pull_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Hello 👋 ! Here are the SCA scan results.  \n $package_manager_results \n $signature_scan_results'
+            const octokit = new Octokit({
+              auth: '$GITHUB_TOKEN'
+            })
+
+            await octokit.request('POST /repos/{context.repo.owner}/{context.repo.repo}/pulls/{context.issue.number}/reviews', {
+              owner: 'context.repo.owner',
+              repo: 'context.repo.repo',
+              pull_number: 'context.issue.number',
+              commit_id: 'ecdd80bb57125d7ba9641ffaa4d7d2c19d3f3091',
+              body: 'This is close to perfect! Please address the suggested inline change.'
             })
