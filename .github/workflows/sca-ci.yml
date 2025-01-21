@@ -42,8 +42,6 @@ jobs:
   report:
     needs: [package-manager-scan, signature-scan]
     runs-on: ["sca"]
-    permissions:
-      pull-requests: write
     steps:
       - name: Generate Report
         run: |
