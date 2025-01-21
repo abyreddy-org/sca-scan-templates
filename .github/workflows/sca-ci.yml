@@ -43,12 +43,16 @@ jobs:
     needs: [package-manager-scan, signature-scan]
     runs-on: ["sca"]
     steps:
-      - if: ${{ github.event_name == 'pull_request' && github.event.action == 'opened' }}
+      - name: Generate Report
+        run: |
+          export package_manager_results=$(python3 report.py package-manager-results.json)
+          export signature_scan_results=$(python3 report.py signature-scan-results.json)
+          echo $package_manager_results
+          echo $signature_scan_results
+      - if: github.event_name == 'pull_request' && github.event.action == 'opened'
         uses: actions/github-script@v7
         with:
           script: |
-            export package_manager_results=$(python3 report.py package-manager-results.json)
-            export signature_scan_results=$(python3 report.py signature-scan-results.json)
             github.rest.pulls.createReview({
               pull_number: context.issue.number,
               owner: context.repo.owner,
