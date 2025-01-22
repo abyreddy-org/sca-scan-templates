@@ -20,12 +20,12 @@ jobs:
         run: scass-cli -scan_type BDIO -bdio_path $PWD/output/bdio/scan.bdio -component_locations_path $PWD/output/bdio/components-with-locations.json
       - name: Publish Results
         run: |
-          python3 /Users/abyreddy/tools/report.py results.json
+          python3 /Users/abyreddy/tools/report.py results.json $(echo $GITHUB_REPOSITORY | cut -d'/' -f1) $(echo $GITHUB_REPOSITORY | cut -d'/' -f2) $GITHUB_REF_NAME
           mv results.json package-manager-results.json
           ls -al *.json
       - name: Create FixPRs
         run: |
-          /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json $(echo $GITHUB_REPOSITORY | cut -d'/' -f1) $(echo $GITHUB_REPOSITORY | cut -d'/' -f2) $GITHUB_REF_NAME
+          /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json
   signature-scan:
     #container:
     #  image: "docker.io/blackducksoftware/sca-tools:1.0"
