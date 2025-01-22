@@ -13,54 +13,30 @@ jobs:
     #  image: "docker.io/blackducksoftware/sca-tools:1.0"
     runs-on: ["sca"]
     steps:
-      #- uses: actions/checkout@v4
-      #- name: Detect Run
-      #  run: java -jar /Users/abyreddy/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=DETECTOR --detect.tools.excluded=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift
-      #- name: Scanning the BDIO with SCASS
-      #  run: scass-cli -scan_type BDIO -bdio_path $PWD/output/bdio/scan.bdio
+      - uses: actions/checkout@v4
+      - name: Detect Run
+        run: java -jar /Users/abyreddy/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=DETECTOR --detect.tools.excluded=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift
+      - name: Scanning the BDIO with SCASS
+        run: scass-cli -scan_type BDIO -bdio_path $PWD/output/bdio/scan.bdio
       - name: Publish Results
         run: |
-          curl http://localhost:8000/results.json -o package-manager-results.json
+          python3 /Users/abyreddy/tools/report.py results.json
+          mv results.json package-manager-results.json
           ls -al *.json
   signature-scan:
     #container:
     #  image: "docker.io/blackducksoftware/sca-tools:1.0"
     runs-on: ["sca"]
     steps:
-      #- uses: actions/checkout@v4
-      #- name: Detect Run
-      #  run: java -jar /Users/abyreddy/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift --detect.blackduck.signature.scanner.local.path=/Users/abyreddy/tools/scan.cli-2025.1.0-rc --detect.blackduck.signature.scanner.arguments="--dryRunWriteDir $PWD/output"
-      #- name: Scanning the BDIO with SCASS
-      #  run: |
-      #    export BDIO_FILE_PATH=$(ls $PWD/output/data/*.bdio)
-      #    echo BDIO file was saved to $BDIO_FILE_PATH
-      #    scass-cli -scan_type BDIO -bdio_path $BDIO_FILE_PATH
+      - uses: actions/checkout@v4
+      - name: Detect Run
+        run: java -jar /Users/abyreddy/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=3 --detect.accuracy.required=NONE --detect.tools=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift --detect.blackduck.signature.scanner.local.path=/Users/abyreddy/tools/scan.cli-2025.1.0-rc --detect.blackduck.signature.scanner.arguments="--dryRunWriteDir $PWD/output"
+      - name: Scanning the BDIO with SCASS
+        run: |
+          export BDIO_FILE_PATH=$(ls $PWD/output/data/*.bdio)
+          echo BDIO file was saved to $BDIO_FILE_PATH
+          scass-cli -scan_type BDIO -bdio_path $BDIO_FILE_PATH
       - name: Publish Results
         run: |
-          curl http://localhost:8000/results.json -o signature-scan-results.json
+          mv results.json signature-scan-results.json
           ls -al *.json
-  report:
-    needs: [package-manager-scan, signature-scan]
-    runs-on: ["sca"]
-    steps:
-      - name: Generate Report
-        run: |
-          export package_manager_results=$(python3 /Users/abyreddy/tools/report.py package-manager-results.json)
-          export signature_scan_results=$(python3 /Users/abyreddy/tools/report.py signature-scan-results.json)
-          echo $package_manager_results
-          echo $signature_scan_results
-      - if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const octokit = new Octokit({
-              auth: '$GITHUB_TOKEN'
-            })
-
-            await octokit.request('POST /repos/{context.repo.owner}/{context.repo.repo}/pulls/{context.issue.number}/reviews', {
-              owner: 'context.repo.owner',
-              repo: 'context.repo.repo',
-              pull_number: 'context.issue.number',
-              commit_id: 'ecdd80bb57125d7ba9641ffaa4d7d2c19d3f3091',
-              body: 'This is close to perfect! Please address the suggested inline change.'
-            })
