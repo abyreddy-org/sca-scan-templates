@@ -25,7 +25,7 @@ jobs:
           ls -al *.json
       - name: Create FixPRs
         run: |
-          /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json
+          /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json $(echo $GITHUB_REPOSITORY | cut -d'/' -f1) $(echo $GITHUB_REPOSITORY | cut -d'/' -f2) $GITHUB_REF_NAME
   signature-scan:
     #container:
     #  image: "docker.io/blackducksoftware/sca-tools:1.0"
