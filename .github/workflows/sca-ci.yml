@@ -23,6 +23,9 @@ jobs:
           python3 /Users/abyreddy/tools/report.py results.json
           mv results.json package-manager-results.json
           ls -al *.json
+      - name: Create FixPRs
+        run: |
+          /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json
   signature-scan:
     #container:
     #  image: "docker.io/blackducksoftware/sca-tools:1.0"
@@ -39,13 +42,4 @@ jobs:
       - name: Publish Results
         run: |
           mv results.json signature-scan-results.json
-          ls -al *.json
-  fix-pr:
-    #container:
-    #  image: "docker.io/blackducksoftware/sca-tools:1.0"
-    runs-on: ["sca"]
-    needs: [package-manager-scan, signature-scan]
-    steps:
-      - name: Create a FixPR
-        run: |
           ls -al *.json
