@@ -1,12 +1,5 @@
 name: SCA Workflow
 
-on:
-  workflow_call: 
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:
   package-manager-scan:
     #container:
