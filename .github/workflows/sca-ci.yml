@@ -22,7 +22,11 @@ jobs:
       - name: Create FixPRs
         run: |
           if [[ $GITHUB_REF_NAME == "main" ]]; then
-            /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json
+            if [ -f fixpr_summaries.json ]; then
+              /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json
+            else
+              echo "File: fixpr_summaries.json not found. Skipping Fix PRs to creation."
+            fi
           fi
   signature-scan:
     #container:
