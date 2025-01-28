@@ -25,7 +25,7 @@ jobs:
             if [ -f fixpr_summaries.json ]; then
               /Users/abyreddy/tools/github-pull-request-handler fixpr_summaries.json
             else
-              echo "File: fixpr_summaries.json not found. Skipping Fix PRs to creation."
+              echo "File: fixpr_summaries.json not found. Skipping FixPRs creation."
             fi
           fi
   signature-scan:
