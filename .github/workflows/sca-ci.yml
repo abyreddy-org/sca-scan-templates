@@ -13,7 +13,7 @@ jobs:
       - name: Detect Run
         run: java -jar /Users/abyreddy/tools/detect-10.1.0.jar --detect.output.path=$PWD/output --detect.bdio.output.path=$PWD/output/bdio --detect.scan.output.path=$PWD/output/bdio --detect.source.path=$PWD --detect.status.json.output.path=$PWD/output --detect.component.location.analysis.enabled=true --blackduck.offline.mode=true --blackduck.offline.mode.force.bdio=true --detect.cleanup=false --detect.excluded.directories=_MACOSX --detect.detector.search.depth=1 --detect.accuracy.required=NONE --detect.tools=DETECTOR --detect.tools.excluded=SIGNATURE_SCAN --detect.bdio.file.name=scan --detect.excluded.detector.types=GIT --detect.project.inspector.global.arguments=--quiet --detect.maven.path=/dummpy/path/mvnw --detect.gradle.path=/dummpy/path/gradlew --detect.dart.path=/dummpy/path/dart --detect.flutter.path=/dummpy/path/flutter --detect.conan.path=/dummpy/path/conan --detect.swift.path=/dumpy/path/swift
       - name: Scanning the BDIO with SCASS
-        run: scass-cli -scan_type BDIO -bdio_path $PWD/output/bdio/scan.bdio -component_locations_path $PWD/output/bdio/components-with-locations.json
+        run: scass-cli -scan_type BDIO -artifact_path $PWD/output/bdio/scan.bdio -component_locations_path $PWD/output/bdio/components-with-locations.json
       - name: Publish Results
         run: |
           python3 /Users/abyreddy/tools/report.py results.json $(echo $GITHUB_REPOSITORY | cut -d'/' -f1) $(echo $GITHUB_REPOSITORY | cut -d'/' -f2) $GITHUB_REF_NAME
@@ -40,7 +40,7 @@ jobs:
         run: |
           export BDIO_FILE_PATH=$(ls $PWD/output/data/*.bdio)
           echo BDIO file was saved to $BDIO_FILE_PATH
-          scass-cli -scan_type BDIO -bdio_path $BDIO_FILE_PATH
+          scass-cli -scan_type BDIO -artifact_path $BDIO_FILE_PATH
       - name: Publish Results
         run: |
           mv results.json signature-scan-results.json
